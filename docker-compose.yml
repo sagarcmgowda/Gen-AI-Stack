@@ -1,0 +1,18 @@
+services:
+  backend:
+    build: ./backend
+    container_name: genai-backend
+    ports: ["8000:8000"]
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - SERP_API_KEY=${SERP_API_KEY}
+      - EMBED_PROVIDER=${EMBED_PROVIDER:-openai}
+      - LLM_PROVIDER=${LLM_PROVIDER:-openai}
+    volumes:
+      - ./backend/data:/app/data
+  frontend:
+    build: ./frontend
+    container_name: genai-frontend
+    ports: ["5173:80"]
+    depends_on:
+      - backend
